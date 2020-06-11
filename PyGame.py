@@ -9,6 +9,7 @@ paddle_height = 50
 paddle_width = 10
 paddle_padding = 20
 
+print (type(HEIGHT / 2))
 
 # Draw scenario
 pygame.init()
@@ -25,6 +26,9 @@ pygame.draw.rect(screen, fg_colour, pygame.Rect(
     (WIDTH - paddle_width - paddle_padding, (HEIGHT / 2) - (paddle_height / 2)),
     (paddle_width - paddle_padding, paddle_height)))
 
+
+# position ball
+pygame.draw.circle(screen, fg_colour, ((int(WIDTH / 2)),(int(HEIGHT / 2))), 10)
 
 # draw to screen
 pygame.display.flip()
