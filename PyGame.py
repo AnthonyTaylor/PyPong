@@ -18,11 +18,12 @@ screen = pygame.display.set_mode((WIDTH,HEIGHT)) # set window size
 
 class Ball:
     radius = 20
-    def __init__(self, x,y, vx, vy):
+    def __init__(self, x,y, vx, vy, paddle):
         self.x = x
         self.y = y
         self.vx = vx
         self.vy = vy
+        self.paddle = paddle
 
     def show(self, colour):
         global screen
@@ -33,8 +34,11 @@ class Ball:
 
         new_x = self.x + self.vx
         new_y = self.y + self.vy
-
-        if new_x < BORDER + self.radius:
+        if new_x > WIDTH - self.paddle.WIDTH:
+            if new_y > (self.paddle.get_pos() - self.paddle.HEIGHT//2) and new_y < (self.paddle.get_pos() + self.paddle.HEIGHT//2):
+                self.vx = -self.vx
+                self.vy = -self.vy
+        elif new_x < BORDER + self.radius:
             self.vx = -self.vx
         elif new_y < BORDER + self.radius or new_y > HEIGHT-BORDER-self.radius:
             self.vy = -self.vy
@@ -64,11 +68,14 @@ class Paddle:
         self.show(bg_colour)
         self.y = pygame.mouse.get_pos()[1]
         self.show(fg_colour)
+        
+    def get_pos(self):
+        return self.y
 
 
 # Create objects
-ball_play = Ball(WIDTH - Ball.radius, HEIGHT//2, -VELOCITY, VELOCITY)
 paddle_play = Paddle(HEIGHT // 2)
+ball_play = Ball(WIDTH - Ball.radius, HEIGHT//2, -VELOCITY, VELOCITY, paddle_play)
 
 # position borders
 pygame.draw.rect(screen, fg_colour, pygame.Rect((0,0),(WIDTH,BORDER)))
